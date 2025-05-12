@@ -1,0 +1,6 @@
+gspread
+numpy==1.26.4
+pandas==2.0.3
+Pillow
+streamlit==1.44.0
+st_gsheets_connection
