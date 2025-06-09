@@ -61,5 +61,30 @@ model_usage_questions = [
         "question": "The model could replace clinicians when scoring hand radiographs.",
         "subquestions": options_model,
         "options": options_likert,
+    },
+    {
+        "question_number": 2,
+        "question": "The model will be useful in clinical diagnosis and monitoring.",
+        "subquestions": options_model,
+        "options": options_likert,
+    },
+    {
+        "question_number": 3,
+        "question": "The visual explanation will be useful if the model is adopted in clinical diagnosis and monitoring.",
+        "subquestions": options_model,
+        "options": options_likert,
+    },
+    {
+        "question_number": 4,
+        "question": "The model will be useful in clinical trials.",
+        "subquestions": options_model,
+        "options": options_likert,
+    },
+    {
+        "question_number": 5,
+        "question": "The visual explanation will be useful if the model is adopted in clinical trials.",
+        "subquestions": options_model,
+        "options": options_likert,
     }
 ]
+
