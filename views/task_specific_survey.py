@@ -23,7 +23,7 @@ answer_name_list = []
 for i in range(len(df_samples)):
     exam_num = df_samples['exam_number'][i]
     for m in range(3):
-        answer_name_list += [f'DX{exam_num}_m{m+1}q1', f'DX{exam_num}_m{m+1}q2']
+        answer_name_list += [f'DX{exam_num}_m{m+1}q1', f'DX{exam_num}_m{m+1}q2', f'DX{exam_num}_m{m+1}q3']
 
 # st.write(answer_name_list)
 
@@ -35,10 +35,13 @@ def images_questions_display(df, idx):
     dic_answers = {
         f'DX{exam_num}_m1q1': '',
         f'DX{exam_num}_m1q2': '',
+        f'DX{exam_num}_m1q3': '',
         f'DX{exam_num}_m2q1': '',
         f'DX{exam_num}_m2q2': '',
+        f'DX{exam_num}_m2q3': '',
         f'DX{exam_num}_m3q1': '',
         f'DX{exam_num}_m3q2': '',
+        f'DX{exam_num}_m3q3': '',
     }
     predictions = [df['pred_m1'][idx],df['pred_m2'][idx],df['pred_m3'][idx]]
     errors = [df['error_m1'][idx],df['error_m2'][idx],df['error_m3'][idx]]
@@ -87,6 +90,16 @@ def images_questions_display(df, idx):
         ans2 = options_placeholder.radio(questions[1].get('question'), options, index=index_val, key = f'DX{exam_num}_m{model_idx+1}_q2')
         dic_answers[f'DX{exam_num}_m{model_idx+1}q2'] = ans2
         st.session_state[f'DX{exam_num}_m{model_idx+1}q2'] = ans2
+
+        question_placeholder = st.empty()
+        options_placeholder = st.empty()
+        options = questions[2].get("options")
+        if f'DX{exam_num}_m{model_idx+1}q3' in st.session_state and st.session_state[f'DX{exam_num}_m{model_idx+1}q3'] is not None:
+            index_val = options.index(st.session_state[f'DX{exam_num}_m{model_idx+1}q3'])
+        else: index_val = None
+        ans3 = options_placeholder.radio(questions[2].get('question'), options, index=index_val, key = f'DX{exam_num}_m{model_idx+1}_q3')
+        dic_answers[f'DX{exam_num}_m{model_idx+1}q3'] = ans3
+        st.session_state[f'DX{exam_num}_m{model_idx+1}q3'] = ans3
 
     # st.write(dic_answers)
     return dic_answers
