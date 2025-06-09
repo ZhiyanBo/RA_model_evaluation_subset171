@@ -151,7 +151,7 @@ def main():
         html_str_0 = f"""
         <style>
         p.a {{
-        font: bold {16}px "Source Sans Pro", sans-serif;
+        font: bold {17}px "Source Sans Pro", sans-serif;
         }}
         </style>
         <p class="a">{model_usage_questions[0].get('question')}</p>
@@ -168,7 +168,7 @@ def main():
         html_str_1 = f"""
         <style>
         p.a {{
-        font: 600 {16}px "Source Sans Pro", sans-serif;
+        font: 600 {17}px "Source Sans Pro", sans-serif;
         }}
         </style>
         <p class="a">{model_usage_questions[1].get('question')}</p>
@@ -180,12 +180,66 @@ def main():
         st.session_state['mu2_m2'] = question_options_display_sub(model_usage_questions[1].get('subquestions')[1], model_usage_questions[1].get('options'), val = 'mu2_m2')
         st.session_state['mu2_m3'] = question_options_display_sub(model_usage_questions[1].get('subquestions')[2], model_usage_questions[1].get('options'), val = 'mu2_m3')
 
+        html_str_2 = f"""
+        <style>
+        p.a {{
+        font: 600 {17}px "Source Sans Pro", sans-serif;
+        }}
+        </style>
+        <p class="a">{model_usage_questions[2].get('question')}</p>
+        """
+        st.markdown(html_str_2, unsafe_allow_html=True)
+        st.session_state['mu3_m1'] = question_options_display_sub(model_usage_questions[2].get('subquestions')[0], model_usage_questions[2].get('options'), val = 'mu3_m1')
+        st.session_state['mu3_m2'] = question_options_display_sub(model_usage_questions[2].get('subquestions')[1], model_usage_questions[2].get('options'), val = 'mu3_m2')
+        st.session_state['mu3_m3'] = question_options_display_sub(model_usage_questions[2].get('subquestions')[2], model_usage_questions[2].get('options'), val = 'mu3_m3')
+
+        html_str_3 = f"""
+        <style>
+        p.a {{
+        font: 600 {17}px "Source Sans Pro", sans-serif;
+        }}
+        </style>
+        <p class="a">{model_usage_questions[3].get('question')}</p>
+        """
+        st.markdown(html_str_3, unsafe_allow_html=True)
+        st.session_state['mu4_m1'] = question_options_display_sub(model_usage_questions[3].get('subquestions')[0], model_usage_questions[3].get('options'), val = 'mu4_m1')
+        st.session_state['mu4_m2'] = question_options_display_sub(model_usage_questions[3].get('subquestions')[1], model_usage_questions[3].get('options'), val = 'mu4_m2')
+        st.session_state['mu4_m3'] = question_options_display_sub(model_usage_questions[3].get('subquestions')[2], model_usage_questions[3].get('options'), val = 'mu4_m3')
+
+        html_str_4 = f"""
+        <style>
+        p.a {{
+        font: 600 {17}px "Source Sans Pro", sans-serif;
+        }}
+        </style>
+        <p class="a">{model_usage_questions[4].get('question')}</p>
+        """
+        st.markdown(html_str_4, unsafe_allow_html=True)
+        st.session_state['mu5_m1'] = question_options_display_sub(model_usage_questions[4].get('subquestions')[0], model_usage_questions[4].get('options'), val = 'mu5_m1')
+        st.session_state['mu5_m2'] = question_options_display_sub(model_usage_questions[4].get('subquestions')[1], model_usage_questions[4].get('options'), val = 'mu5_m2')
+        st.session_state['mu5_m3'] = question_options_display_sub(model_usage_questions[4].get('subquestions')[2], model_usage_questions[4].get('options'), val = 'mu5_m3')
+
+        html_str_5 = f"""
+        <style>
+        p.a {{
+        font: 600 {17}px "Source Sans Pro", sans-serif;
+        }}
+        </style>
+        <p class="a">{model_usage_questions[5].get('question')}</p>
+        """
+        st.markdown(html_str_5, unsafe_allow_html=True)
+        st.session_state['mu6_m1'] = question_options_display_sub(model_usage_questions[5].get('subquestions')[0], model_usage_questions[5].get('options'), val = 'mu6_m1')
+        st.session_state['mu6_m2'] = question_options_display_sub(model_usage_questions[5].get('subquestions')[1], model_usage_questions[5].get('options'), val = 'mu6_m2')
+        st.session_state['mu6_m3'] = question_options_display_sub(model_usage_questions[5].get('subquestions')[2], model_usage_questions[5].get('options'), val = 'mu6_m3')
+
         mu_done = st.form_submit_button("Submit")
         # if 'mu_done' in st.session_state and st.session_state['mu_done'] == True:
         #     st.warning("Successfully submitted.")
 
         if mu_done:
-            if None in [st.session_state['mu1_m1'], st.session_state['mu1_m2'], st.session_state['mu1_m3'],st.session_state['mu2_m1'], st.session_state['mu2_m2'], st.session_state['mu2_m3']]:
+            if None in [st.session_state['mu1_m1'], st.session_state['mu1_m2'], st.session_state['mu1_m3'],st.session_state['mu2_m1'], st.session_state['mu2_m2'], st.session_state['mu2_m3'],
+                        st.session_state['mu3_m1'], st.session_state['mu3_m2'], st.session_state['mu3_m3'],st.session_state['mu4_m1'], st.session_state['mu4_m2'], st.session_state['mu4_m3'],
+                        st.session_state['mu5_m1'], st.session_state['mu5_m2'], st.session_state['mu5_m3'],st.session_state['mu6_m1'], st.session_state['mu6_m2'], st.session_state['mu6_m3']]:
                 st.warning("One or more fields are missing.")
                 st.session_state['mu_done'] = False
             else: 
@@ -208,7 +262,10 @@ def main():
                 st.session_state['mc_done'] = False
                 # if st.session_state['fb'] = 
                 # Update the dataframe
-                for col in ['mc1', 'mc2', 'mc3', 'mc4', 'mc5', 'mc6', 'mu1_m1', 'mu1_m2', 'mu1_m3', 'mu2_m1', 'mu2_m2', 'mu2_m3', 'fb', 'posttask_done']:
+                for col in ['mc1', 'mc2', 'mc3', 'mc4', 'mc5', 'mc6', 
+                            'mu1_m1', 'mu1_m2', 'mu1_m3', 'mu2_m1', 'mu2_m2', 'mu2_m3',
+                            'mu3_m1', 'mu3_m2', 'mu3_m3', 'mu4_m1', 'mu4_m2', 'mu4_m3',
+                            'mu5_m1', 'mu5_m2', 'mu5_m3', 'mu6_m1', 'mu6_m2', 'mu6_m3', 'fb', 'posttask_done']:
                     st.session_state['new_row'].loc[0, col] = st.session_state[col]
                 df = conn.read()
                 st.cache_data.clear()
