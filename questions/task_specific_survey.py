@@ -22,4 +22,13 @@ questions = [
                 "4 - Useful: helpful for explaining why the model made the decision", 
                 "5 - Highly useful: crucial for my judgement"],
     },
+    {
+    "question_number": 3, 
+    "question": "To which extent do you agree with the statement: **I fully understand what the visual explanation shows**?",
+    "options": ["1 - Disagree: I do not understand how to interpret the heatmap at all", 
+                "2 - Partially disagree", 
+                "3 - Neutral: I understand how to interpret the heatmap but do not understand how it is related to the prediction", 
+                "4 - Partially agree", 
+                "5 - Agree: I fully understand how to interpret the heatmap and what it infers about the prediction"],
+    },
     ]
