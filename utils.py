@@ -114,7 +114,7 @@ def nav_bar_visibility():
 all_model_questions = []
 for img in os.listdir('static/seed171/original_images'):
     for i in range(3):
-        for j in range(2):
+        for j in range(3):
             all_model_questions += [f"{img[:-4]}_m{i+1}q{j+1}"]
 
 def match_session_record(df, email, all_model_questions = all_model_questions):
