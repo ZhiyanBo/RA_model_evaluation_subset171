@@ -371,7 +371,7 @@ container_style = """
     </style>
 """
 
-def ColourBulletPoint(txt1,txt2,txt3,txt4,txt5, colour = 'rgb(217, 90, 0)', font_size = '15px'):
+def ColourBulletPoint(txt1,txt2,txt3,txt4,txt5,txt6, colour = 'rgb(217, 90, 0)', font_size = '15px'):
     htmlstr = f"""
 <ul>
 <li style="font-style: italic; color: {colour}; font-size: {font_size};">{txt1}</li>
@@ -379,6 +379,7 @@ def ColourBulletPoint(txt1,txt2,txt3,txt4,txt5, colour = 'rgb(217, 90, 0)', font
 <li style="font-style: italic; color: {colour}; font-size: {font_size};">{txt3}</li>
 <li style="font-style: italic; color: {colour}; font-size: {font_size};">{txt4}</li>
 <li style="font-style: italic; color: {colour}; font-size: {font_size};">{txt5}</li>
+<li style="font-style: italic; color: {colour}; font-size: {font_size};">{txt6}</li>
 <ul>
 """
     st.markdown(htmlstr, unsafe_allow_html=True)
@@ -386,10 +387,11 @@ def ColourBulletPoint(txt1,txt2,txt3,txt4,txt5, colour = 'rgb(217, 90, 0)', font
 with st.container(border = True):
     st.markdown(":orange[_**Tips for using this survey**_]")
     ColourBulletPoint(txt1 = 'Please avoid going back to the previous page or forth to the next page using browser buttons or via keyboard shortcuts.',
-                      txt2 = 'You can return to a previous page by clicking on the corresponding tab in the side panel.',
-                      txt3 = 'If you return to an earlier section of the survey, you need to submit it again to proceed to the next section.',
-                      txt4 = 'You can always return to this introduction page by clicking on the “Study overview” tab in the side panel at any stage of the survey.',
-                      txt5 = 'You can resume an unfinished survey by logging in with the same email. Your answers in finished sections are automatically saved.')
+                      txt2 = 'Please avoid refreshing the page when working through a section. Once you refresh a page, the survey will automatically return to the “Study overview” tab without recording your unsaved answers.',
+                      txt3 = 'You can return to a previous page by clicking on the corresponding tab in the side panel.',
+                      txt4 = 'If you return to an earlier section of the survey, you need to submit it again to proceed to the next section.',
+                      txt5 = 'You can always return to this introduction page by clicking on the “Study overview” tab in the side panel at any stage of the survey.',
+                      txt6 = 'You can resume an unfinished survey by logging in with the same email. Your answers in finished sections are automatically saved.')
 
 # st.markdown('''
 #             <style>
