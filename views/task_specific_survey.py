@@ -74,32 +74,53 @@ def images_questions_display(df, idx):
         question_placeholder = st.empty()
         options_placeholder = st.empty()
         options = questions[0].get("options")
-        if f'DX{exam_num}_m{model_idx+1}q1' in st.session_state and st.session_state[f'DX{exam_num}_m{model_idx+1}q1'] is not None:
+        if f'DX{exam_num}_m{model_idx+1}q1' in st.session_state and st.session_state[f'DX{exam_num}_m{model_idx+1}q1'] not in [None, 'NA_']:
             index_val = options.index(st.session_state[f'DX{exam_num}_m{model_idx+1}q1'])
-        else: index_val = None
+        else: 
+            index_val = None
+            st.session_state[f'DX{exam_num}_m{model_idx+1}q1'] = 'NA_'
+
         ans1 = options_placeholder.radio(questions[0].get('question'), options, index=index_val, key = f'DX{exam_num}_m{model_idx+1}_q1')
         dic_answers[f'DX{exam_num}_m{model_idx+1}q1'] = ans1
         st.session_state[f'DX{exam_num}_m{model_idx+1}q1'] = ans1
 
+        if f'DX{exam_num}_m{model_idx+1}q1' in st.session_state and st.session_state[f'DX{exam_num}_m{model_idx+1}q1'] in [None, 'NA_']:
+            st.session_state[f'DX{exam_num}_m{model_idx+1}q1'] = 'NA_'
+            dic_answers[f'DX{exam_num}_m{model_idx+1}q1'] = 'NA_'
+
         question_placeholder = st.empty()
         options_placeholder = st.empty()
         options = questions[1].get("options")
-        if f'DX{exam_num}_m{model_idx+1}q2' in st.session_state and st.session_state[f'DX{exam_num}_m{model_idx+1}q2'] is not None:
+        if f'DX{exam_num}_m{model_idx+1}q2' in st.session_state and st.session_state[f'DX{exam_num}_m{model_idx+1}q2'] not in [None, 'NA_']:
             index_val = options.index(st.session_state[f'DX{exam_num}_m{model_idx+1}q2'])
-        else: index_val = None
+        else: 
+            index_val = None
+            st.session_state[f'DX{exam_num}_m{model_idx+1}q2'] = 'NA_'
+        
         ans2 = options_placeholder.radio(questions[1].get('question'), options, index=index_val, key = f'DX{exam_num}_m{model_idx+1}_q2')
         dic_answers[f'DX{exam_num}_m{model_idx+1}q2'] = ans2
         st.session_state[f'DX{exam_num}_m{model_idx+1}q2'] = ans2
 
+        if f'DX{exam_num}_m{model_idx+1}q2' in st.session_state and st.session_state[f'DX{exam_num}_m{model_idx+1}q2'] in [None, 'NA_']:
+            st.session_state[f'DX{exam_num}_m{model_idx+1}q2'] = 'NA_'
+            dic_answers[f'DX{exam_num}_m{model_idx+1}q2'] = 'NA_'
+
         question_placeholder = st.empty()
         options_placeholder = st.empty()
         options = questions[2].get("options")
-        if f'DX{exam_num}_m{model_idx+1}q3' in st.session_state and st.session_state[f'DX{exam_num}_m{model_idx+1}q3'] is not None:
+        if f'DX{exam_num}_m{model_idx+1}q3' in st.session_state and st.session_state[f'DX{exam_num}_m{model_idx+1}q3'] not in [None, 'NA_']:
             index_val = options.index(st.session_state[f'DX{exam_num}_m{model_idx+1}q3'])
-        else: index_val = None
+        else: 
+            index_val = None
+            st.session_state[f'DX{exam_num}_m{model_idx+1}q3'] = 'NA_'
+        
         ans3 = options_placeholder.radio(questions[2].get('question'), options, index=index_val, key = f'DX{exam_num}_m{model_idx+1}_q3')
         dic_answers[f'DX{exam_num}_m{model_idx+1}q3'] = ans3
         st.session_state[f'DX{exam_num}_m{model_idx+1}q3'] = ans3
+        
+        if f'DX{exam_num}_m{model_idx+1}q3' in st.session_state and st.session_state[f'DX{exam_num}_m{model_idx+1}q3'] in [None, 'NA_']:
+            st.session_state[f'DX{exam_num}_m{model_idx+1}q3'] = 'NA_'
+            dic_answers[f'DX{exam_num}_m{model_idx+1}q3'] = 'NA_'
 
     # st.write(dic_answers)
     return dic_answers
@@ -132,7 +153,9 @@ def main(df):
     #     # st.table(df)
     #     st.cache_data.clear()
     
-    st.session_state['new_row'] = match_session_record(df, st.session_state['email'])
+    if 'email' in st.session_state:
+        st.session_state['new_row'] = match_session_record(df, st.session_state['email'])
+    else: st.switch_page('views/introduction.py')
 
     st.session_state['task_start'] = True
     st.session_state['pretask_start'] = True
@@ -199,25 +222,61 @@ def main(df):
             img_answers = images_questions_display(df_samples, img_idx)
             # st.write()
             # Set image completion status
-            if all(img_answers.values()):
-                # st.write(img_answers)
-                st.session_state[f'im_{img_idx}_done'] = True
-            else: st.session_state[f'im_{img_idx}_done'] = False
+            if 'NA_' in img_answers.values():
+                st.session_state[f'im_{img_idx}_done'] = False
+            else: st.session_state[f'im_{img_idx}_done'] = True
             dic_all_images.update(img_answers)
 
         st.session_state['eval_all_images'] = dic_all_images
     
-        task_submitted = st.form_submit_button('Finish')
-    # st.write(dic_all_images)
-    # st.write(st.session_state)
-    # st.write(st.session_state['new_row'].loc[0, 'eval_all_images'])
+        # Check if all questions are answered:
+        if 'NA_' not in dic_all_images.values():
+            st.warning("All questions are completed. Please click on **Finish** to save your answers and proceed to the next section.")
+            task_submitted = st.form_submit_button('Finish')
 
-        if task_submitted:
+            if task_submitted:
             # if all(name in dic_all_images for name in answer_name_list):
-            if None not in dic_all_images.values():
+                if 'NA_' not in dic_all_images.values():
+                    with st.spinner("Saving your answers ... ", show_time=False):
+                        st.session_state['eval_all_images'] = dic_all_images
+                        st.session_state['task_done'] = True
+                        # Update the dataframe
+                        # df_new_row = st.session_state['new_row']
+                        # for col in ['eval_all_images', 'task_done']:
+                        st.session_state['new_row'].loc[0, 'task_done'] = st.session_state['task_done']
+                        st.session_state['new_row'].loc[0, 'eval_all_images'] = [st.session_state['eval_all_images']]
+                        # st.session_state['new_row'] = df_new_row
+                        df = conn.read()
+                        st.cache_data.clear()
+                        st.session_state['new_row'] = st.session_state['new_row'].set_index('email')
+                        df = df.set_index('email')
+                        df.update(st.session_state['new_row'])
+                        df = df.reset_index()
+                        st.session_state['new_row'] = st.session_state['new_row'].reset_index()
+                        df = conn.update(worksheet = 'Sheet1', data = df)
+
+                        st.switch_page('views/posttask_survey.py')
+                # else: 
+                #     st.warning("One or more fields are missing.")
+                #     st.session_state['task_done'] = False
+                #     unfinished_imgs = 'Images with missing answers: '
+                #     for idx in range(len(df_samples)):
+                #         if st.session_state[f'im_{idx}_done'] == False:
+                #             unfinished_imgs = unfinished_imgs + f"{idx + 1}, "
+                #     st.warning(unfinished_imgs[:-2])
+        else:
+            st.warning("One or more fields are missing")
+            st.session_state['task_done'] = False
+            unfinished_imgs = 'Images with missing answers: '
+            for idx in range(len(df_samples)):
+                if st.session_state[f'im_{idx}_done'] == False:
+                    unfinished_imgs = unfinished_imgs + f"{idx + 1}, "
+            st.warning(unfinished_imgs[:-2])
+            task_submitted = st.form_submit_button('Save current answers')
+            if task_submitted:
                 with st.spinner("Saving your answers ... ", show_time=False):
                     st.session_state['eval_all_images'] = dic_all_images
-                    st.session_state['task_done'] = True
+                    st.session_state['task_done'] = False
                     # Update the dataframe
                     # df_new_row = st.session_state['new_row']
                     # for col in ['eval_all_images', 'task_done']:
@@ -232,16 +291,7 @@ def main(df):
                     df = df.reset_index()
                     st.session_state['new_row'] = st.session_state['new_row'].reset_index()
                     df = conn.update(worksheet = 'Sheet1', data = df)
-
-                    st.switch_page('views/posttask_survey.py')
-            else: 
-                st.warning("One or more fields are missing.")
-                st.session_state['task_done'] = False
-                unfinished_imgs = 'Images with missing answers: '
-                for idx in range(len(df_samples)):
-                    if st.session_state[f'im_{idx}_done'] == False:
-                        unfinished_imgs = unfinished_imgs + f"{idx + 1}, "
-                st.warning(unfinished_imgs[:-2])
+                    # def scroll_to(element_id):
 
 
 main(df)
