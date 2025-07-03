@@ -55,7 +55,9 @@ def main():
     # st.write(st.session_state)
     # st.write(df['email'])
     # st.write(st.session_state['email'])
-    st.session_state['new_row'] = match_session_record(df, st.session_state['email'])
+    if 'email' in st.session_state:
+        st.session_state['new_row'] = match_session_record(df, st.session_state['email'])
+    else: st.switch_page('views/introduction.py')
 
     # Sidebar navigation
     st.session_state['pretask_start'] = True
