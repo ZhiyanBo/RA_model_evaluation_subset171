@@ -21,7 +21,9 @@ def main():
     df = conn.read()
     # st.table(df)
     st.cache_data.clear()
-    st.session_state['new_row'] = match_session_record(df, st.session_state['email'])
+    if 'email' in st.session_state:
+        st.session_state['new_row'] = match_session_record(df, st.session_state['email'])
+    else: st.switch_page('views/introduction.py')
     # st.session_state['intro_start'] = False
     # st.session_state['pretask_start'] = False
     # st.session_state['task_start'] = False
