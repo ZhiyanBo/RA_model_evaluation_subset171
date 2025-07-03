@@ -137,8 +137,7 @@ def match_session_record(df, email, all_model_questions = all_model_questions):
     # st.write(f"Eval all images: {st.session_state['new_row'].loc[0, 'eval_all_images']}")
     if st.session_state['new_row'].loc[0, 'eval_all_images'] == [{'task': False}] and any(key in st.session_state for key in all_model_questions):
         for k in all_model_questions:
-            if k in st.session_state:
-                del st.session_state[k]
+            st.session_state[k] = 'NA_'
     elif df_user['task_done'][0] == 1 or df_user['task_done'][0] == True:
         for k in list(st.session_state['eval_all_images'].keys()):
             st.session_state[k] = st.session_state['eval_all_images'][k]
