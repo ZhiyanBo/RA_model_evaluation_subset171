@@ -182,7 +182,7 @@ def main(df):
     nav_bar_visibility()
     st.header('Model evaluation', anchor="task_begin")
     st.write("You can save the incomplete form by clicking on the **Save current answers** button at the end of the page. \nOnce all questions are answered, the button will automatically switch to **Finish** to enable you to proceed to the next section.")
-    st.write("We recommend saving your answers every time you need to temporarily leave the webpage to avoid unexpected loss of connection.")
+    st.write("We recommend saving your answers every time you need to temporarily leave the webpage to avoid unexpected loss of connection and data.")
     st.markdown("""
                 <html>
                     <head>
