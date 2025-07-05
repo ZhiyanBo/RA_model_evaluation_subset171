@@ -196,7 +196,7 @@ def main():
                 st.session_state['time_submission'] = currentDateAndTime
                 
                 # Update the dataframe
-                for col in ['ce1', 'ce2', 'ce3', 'ce4', 'ae1', 'ae2', 'ae3', 'ae4', 'ata1', 'ata2', 'pretask_done', 'time_submission']:
+                for col in ['ce1', 'ce2', 'ce3', 'ce4', 'ae1', 'ae2', 'ae3', 'ae4', 'ata1', 'ata2', 'pretask_done', 'time_login', 'time_submission']:
                     st.session_state['new_row'].loc[0, col] = st.session_state[col]
                     # st.write(st.session_state['new_row'])
                 # st.session_state['new_row']['pretask_done'] = 'True'
