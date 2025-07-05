@@ -99,7 +99,7 @@ def main():
             st.session_state['time_submission'] = currentDateAndTime
 
             # Update the dataframe
-            for col in ['end_done', 'time_submission']:
+            for col in ['end_done', 'time_login', 'time_submission']:
                 st.session_state['new_row'].loc[0, col] = st.session_state[col]
             df = conn.read()
             st.cache_data.clear()
