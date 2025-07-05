@@ -10,6 +10,8 @@ from streamlit_gsheets import GSheetsConnection
 import gspread
 from utils import nav_bar_visibility, match_session_record
 import streamlit.components.v1 as components
+from datetime import datetime
+import pytz
 
 # Load CSS configs
 def load_css(file_path):
@@ -439,6 +441,9 @@ if intro_submitted:
         # st.write(f"St.email = {email_add}")
         if email_add in df['email'].tolist():
             st.session_state['new_row'] = match_session_record(df, email_add)
+            tz_London = pytz.timezone('Europe/London')
+            currentDateAndTime = datetime.now(tz_London)
+            st.session_state['time_login'] = currentDateAndTime
             # st.write(st.session_state['new_row'])
             # st.write(st.session_state)
             if st.session_state['new_row']['end_done'][0] == True:
@@ -449,23 +454,32 @@ if intro_submitted:
                 # st.session_state['new_row']['end_done'] = False
                 del st.session_state['new_row']
             elif st.session_state['new_row']['posttask_done'][0] == True or st.session_state['new_row']['posttask_done'][0] == 1:
+                st.session_state['new_row'].loc[0, 'time_login'] = st.session_state['time_login']
                 # st.switch_page('views/posttask_survey.py')
                 st.switch_page('views/end_page.py')
             elif st.session_state['new_row']['task_done'][0] == True or st.session_state['new_row']['task_done'][0] == 1:
+                st.session_state['new_row'].loc[0, 'time_login'] = st.session_state['time_login']
                 # st.switch_page('views/task_specific_survey.py')
                 st.switch_page('views/posttask_survey.py')
             elif st.session_state['new_row']['pretask_done'][0] == True or st.session_state['new_row']['pretask_done'][0] == 1:
+                st.session_state['new_row'].loc[0, 'time_login'] = st.session_state['time_login']
                 # st.switch_page('views/pretask_survey.py')
                 st.switch_page('views/task_specific_survey.py')
-            else: st.switch_page('views/pretask_survey.py')
+            else: 
+                st.session_state['new_row'].loc[0, 'time_login'] = st.session_state['time_login']
+                st.switch_page('views/pretask_survey.py')
         else:
             st.session_state['email'] = email_add
             st.session_state['intro_done'] = True
             # Update the spreadsheet
             df_empty = pd.DataFrame(columns=df.columns)
+            tz_London = pytz.timezone('Europe/London')
+            currentDateAndTime = datetime.now(tz_London)
+            st.session_state['time_login'] = currentDateAndTime
             new_row = [{
                 'email': st.session_state['email'],
                 'eval_all_images': [{'task': False}]
+                'time_login': st.session_state['time_login'],
             }]
             st.session_state['new_row'] = pd.concat([df_empty, pd.DataFrame(new_row)])
             # st.session_state['new_row']['eval_all_images'] = {'task': False}
