@@ -272,7 +272,7 @@ def main():
                 for col in ['mc1', 'mc2', 'mc3', 'mc4', 'mc5', 'mc6', 
                             'mu1_m1', 'mu1_m2', 'mu1_m3', 'mu2_m1', 'mu2_m2', 'mu2_m3',
                             'mu3_m1', 'mu3_m2', 'mu3_m3', 'mu4_m1', 'mu4_m2', 'mu4_m3',
-                            'mu5_m1', 'mu5_m2', 'mu5_m3', 'mu6_m1', 'mu6_m2', 'mu6_m3', 'fb', 'posttask_done','time_submission']:
+                            'mu5_m1', 'mu5_m2', 'mu5_m3', 'mu6_m1', 'mu6_m2', 'mu6_m3', 'fb', 'posttask_done', 'time_login', 'time_submission']:
                     st.session_state['new_row'].loc[0, col] = st.session_state[col]
                 df = conn.read()
                 st.cache_data.clear()
