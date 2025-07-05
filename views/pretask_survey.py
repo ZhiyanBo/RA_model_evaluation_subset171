@@ -4,6 +4,8 @@ import pathlib
 from streamlit_gsheets import GSheetsConnection
 from questions.pretask_survey import clinical_expertise_questions, ai_expertise_questions, ai_attitute_questions
 from utils import nav_bar_visibility, match_session_record
+from datetime import datetime
+import pytz
 # import time
 
 # Load CSS configs
@@ -189,8 +191,12 @@ def main():
                 st.session_state['ce_done'] = False
                 st.session_state['ae_done'] = False
                 st.session_state['ata_done'] = False
+                tz_London = pytz.timezone('Europe/London')
+                currentDateAndTime = datetime.now(tz_London)
+                st.session_state['time_submission'] = currentDateAndTime
+                
                 # Update the dataframe
-                for col in ['ce1', 'ce2', 'ce3', 'ce4', 'ae1', 'ae2', 'ae3', 'ae4', 'ata1', 'ata2', 'pretask_done']:
+                for col in ['ce1', 'ce2', 'ce3', 'ce4', 'ae1', 'ae2', 'ae3', 'ae4', 'ata1', 'ata2', 'pretask_done', 'time_submission']:
                     st.session_state['new_row'].loc[0, col] = st.session_state[col]
                     # st.write(st.session_state['new_row'])
                 # st.session_state['new_row']['pretask_done'] = 'True'
