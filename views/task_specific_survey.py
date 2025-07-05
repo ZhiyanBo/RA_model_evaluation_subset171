@@ -250,6 +250,7 @@ def main(df):
                         tz_London = pytz.timezone('Europe/London')
                         currentDateAndTime = datetime.now(tz_London)
                         st.session_state['time_submission'] = currentDateAndTime
+                        st.session_state['new_row'].loc[0, 'time_login'] = st.session_state['time_login']
                         st.session_state['new_row'].loc[0, 'task_done'] = st.session_state['task_done']
                         st.session_state['new_row'].loc[0, 'eval_all_images'] = [st.session_state['eval_all_images']]
                         st.session_state['new_row'].loc[0, 'time_submission'] = st.session_state['time_submission']
@@ -291,6 +292,7 @@ def main(df):
                     tz_London = pytz.timezone('Europe/London')
                     currentDateAndTime = datetime.now(tz_London)
                     st.session_state['time_submission'] = currentDateAndTime
+                    st.session_state['new_row'].loc[0, 'time_login'] = st.session_state['time_login']
                     st.session_state['new_row'].loc[0, 'task_done'] = st.session_state['task_done']
                     st.session_state['new_row'].loc[0, 'eval_all_images'] = [st.session_state['eval_all_images']]
                     st.session_state['new_row'].loc[0, 'time_submission'] = st.session_state['time_submission']
