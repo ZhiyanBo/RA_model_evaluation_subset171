@@ -6,6 +6,8 @@ import pathlib
 from pathlib import Path
 from streamlit_gsheets import GSheetsConnection
 from utils import nav_bar_visibility,load_css, question_options_display, image_click_pop_static, match_session_record
+from datetime import datetime
+import pytz
 
 # Load CSS configs
 def load_css(file_path):
@@ -92,9 +94,12 @@ def main():
             st.session_state['posttask_start'] = False
             st.session_state['end_start'] = False
             st.session_state['end_done'] = True
+            tz_London = pytz.timezone('Europe/London')
+            currentDateAndTime = datetime.now(tz_London)
+            st.session_state['time_submission'] = currentDateAndTime
 
             # Update the dataframe
-            for col in ['end_done']:
+            for col in ['end_done', 'time_submission']:
                 st.session_state['new_row'].loc[0, col] = st.session_state[col]
             df = conn.read()
             st.cache_data.clear()
