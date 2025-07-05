@@ -455,18 +455,57 @@ if intro_submitted:
                 del st.session_state['new_row']
             elif st.session_state['new_row']['posttask_done'][0] == True or st.session_state['new_row']['posttask_done'][0] == 1:
                 st.session_state['new_row'].loc[0, 'time_login'] = st.session_state['time_login']
+                # Update the spreadsheet
+                df = conn.read()
+                st.cache_data.clear()
+                st.session_state['new_row'] = st.session_state['new_row'].set_index('email')
+                df = df.set_index('email')
+                df.update(st.session_state['new_row'])
+                df = df.reset_index()
+                st.session_state['new_row'] = st.session_state['new_row'].reset_index()
+                df = conn.update(worksheet = 'Sheet1', data = df)
+                
+                st.switch_page('views/task_specific_survey.py')
                 # st.switch_page('views/posttask_survey.py')
                 st.switch_page('views/end_page.py')
             elif st.session_state['new_row']['task_done'][0] == True or st.session_state['new_row']['task_done'][0] == 1:
                 st.session_state['new_row'].loc[0, 'time_login'] = st.session_state['time_login']
-                # st.switch_page('views/task_specific_survey.py')
+                # Update the spreadsheet
+                df = conn.read()
+                st.cache_data.clear()
+                st.session_state['new_row'] = st.session_state['new_row'].set_index('email')
+                df = df.set_index('email')
+                df.update(st.session_state['new_row'])
+                df = df.reset_index()
+                st.session_state['new_row'] = st.session_state['new_row'].reset_index()
+                df = conn.update(worksheet = 'Sheet1', data = df)
+                
                 st.switch_page('views/posttask_survey.py')
             elif st.session_state['new_row']['pretask_done'][0] == True or st.session_state['new_row']['pretask_done'][0] == 1:
                 st.session_state['new_row'].loc[0, 'time_login'] = st.session_state['time_login']
-                # st.switch_page('views/pretask_survey.py')
+                # Update the spreadsheet
+                df = conn.read()
+                st.cache_data.clear()
+                st.session_state['new_row'] = st.session_state['new_row'].set_index('email')
+                df = df.set_index('email')
+                df.update(st.session_state['new_row'])
+                df = df.reset_index()
+                st.session_state['new_row'] = st.session_state['new_row'].reset_index()
+                df = conn.update(worksheet = 'Sheet1', data = df)
+                
                 st.switch_page('views/task_specific_survey.py')
             else: 
                 st.session_state['new_row'].loc[0, 'time_login'] = st.session_state['time_login']
+                # Update the spreadsheet
+                df = conn.read()
+                st.cache_data.clear()
+                st.session_state['new_row'] = st.session_state['new_row'].set_index('email')
+                df = df.set_index('email')
+                df.update(st.session_state['new_row'])
+                df = df.reset_index()
+                st.session_state['new_row'] = st.session_state['new_row'].reset_index()
+                df = conn.update(worksheet = 'Sheet1', data = df)
+                
                 st.switch_page('views/pretask_survey.py')
         else:
             st.session_state['email'] = email_add
