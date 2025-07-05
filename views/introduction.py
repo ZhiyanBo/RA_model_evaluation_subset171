@@ -478,7 +478,7 @@ if intro_submitted:
             st.session_state['time_login'] = currentDateAndTime
             new_row = [{
                 'email': st.session_state['email'],
-                'eval_all_images': [{'task': False}]
+                'eval_all_images': [{'task': False}],
                 'time_login': st.session_state['time_login'],
             }]
             st.session_state['new_row'] = pd.concat([df_empty, pd.DataFrame(new_row)])
