@@ -6,6 +6,8 @@ from questions.posttask_survey import model_comparison_questions, model_usage_qu
 from utils import nav_bar_visibility,load_css, question_options_display, image_click_pop_static, match_session_record
 import numpy as np
 import pandas as pd
+from datetime import datetime
+import pytz
 
 # Load CSS configs
 # def load_css(file_path):
@@ -262,12 +264,15 @@ def main():
                 st.session_state['posttask_done'] = True
                 st.session_state['mu_done'] = False
                 st.session_state['mc_done'] = False
+                tz_London = pytz.timezone('Europe/London')
+                currentDateAndTime = datetime.now(tz_London)
+                st.session_state['time_submission'] = currentDateAndTime
                 # if st.session_state['fb'] = 
                 # Update the dataframe
                 for col in ['mc1', 'mc2', 'mc3', 'mc4', 'mc5', 'mc6', 
                             'mu1_m1', 'mu1_m2', 'mu1_m3', 'mu2_m1', 'mu2_m2', 'mu2_m3',
                             'mu3_m1', 'mu3_m2', 'mu3_m3', 'mu4_m1', 'mu4_m2', 'mu4_m3',
-                            'mu5_m1', 'mu5_m2', 'mu5_m3', 'mu6_m1', 'mu6_m2', 'mu6_m3', 'fb', 'posttask_done']:
+                            'mu5_m1', 'mu5_m2', 'mu5_m3', 'mu6_m1', 'mu6_m2', 'mu6_m3', 'fb', 'posttask_done','time_submission']:
                     st.session_state['new_row'].loc[0, col] = st.session_state[col]
                 df = conn.read()
                 st.cache_data.clear()
