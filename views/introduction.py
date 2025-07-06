@@ -414,7 +414,7 @@ with st.container(border = True):
 # </style>'''
 
 
-st.text("If you are ready to start, please enter your preferred contact email address in the textbox below and click on the “Start Survey” button, " \
+st.write("The entire survey takes around **one hour** to finish. If you are ready to start, please enter your preferred contact email address in the textbox below and click on the “Start Survey” button, " \
 "which will direct you to the first section of the survey.")
 
 st.markdown("In case of questions or concerns, please email **zhiyan.bo@reuben.ox.ac.uk**. We aim to respond within 24 hours of receiving an email. " \
