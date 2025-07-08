@@ -333,7 +333,7 @@ with c32:
     st.text('The model adopts a joint detection mechanism to predict the total SvdH score.')
 with c33:
     # st.image("./data/JL_AMIL_bar/heatmap_DX207586.jpg", width=2048)
-    image_click_pop_static("app/static/seed171/JL_AMIL_bar/heatmap_DX207586.jpg", width = 2048)
+    image_click_pop_static("app/static/seed171/JL_AMIL_bar/heatmap_DX207586.jpg", width = 2252)
 st.markdown("""---""")
 # st.components.v1.html("""<hr style="height:2px;color:#333;background-color:#333;">""")
 
