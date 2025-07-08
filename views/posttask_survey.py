@@ -2,7 +2,7 @@ import streamlit as st
 from PIL import Image
 import pathlib
 from streamlit_gsheets import GSheetsConnection
-from questions.posttask_survey import model_comparison_questions, model_usage_questions
+from questions.posttask_survey import model_comparison_questions, model_usage_questions, ve_usefulness_question
 from utils import nav_bar_visibility,load_css, question_options_display, image_click_pop_static, match_session_record
 import numpy as np
 import pandas as pd
@@ -110,14 +110,63 @@ def main():
                         gap = 'small',
                         vertical_alignment='top',
                         border = False)
-    # Model comparison form
-    st.subheader("Model comparison")
     with c01:
         image_click_pop_static("app/static/seed171/WI_bar/heatmap_DX207586.jpg", width = 2252)
     with c02:
         image_click_pop_static("app/static/seed171/RP_AMIL_bar/heatmap_DX207586.jpg", width = 2252)
     with c03:
         image_click_pop_static("app/static/seed171/JL_AMIL_bar/heatmap_DX207586.jpg", width = 2252)
+
+
+    # Usefulness of VE
+    st.subheader("Usefulness of the visual explanation")
+    st.markdown('Based on your experience in using the models ...', unsafe_allow_html=True)
+    mve_placeholder = st.empty()
+
+    with mve_placeholder.form(key = 've_usefulness', clear_on_submit=False):
+        html_str_ve = f"""
+        <style>
+        p.a {{
+        font: bold {17}px "Source Sans Pro", sans-serif;
+        }}
+        </style>
+        <p class="a">{ve_usefulness_question[0].get('question')}</p>
+        """
+
+        st.markdown(html_str_ve, unsafe_allow_html=True)
+        st.session_state['mve1_m1'] = question_options_display_sub(ve_usefulness_question[0].get('subquestions')[0], ve_usefulness_question[0].get('options'), val = 'mve1_m1')
+        st.session_state['mve1_m2'] = question_options_display_sub(ve_usefulness_question[0].get('subquestions')[1], ve_usefulness_question[0].get('options'), val = 'mve1_m2')
+        st.session_state['mve1_m3'] = question_options_display_sub(ve_usefulness_question[0].get('subquestions')[2], ve_usefulness_question[0].get('options'), val = 'mve1_m3')
+        mve_done = st.form_submit_button("Submit")
+
+        if mve_done:
+            if None in [st.session_state['mve1_m1'], st.session_state['mve1_m2'], st.session_state['mve1_m3']]:
+                st.warning("One or more fields are missing.")
+                st.session_state['mve_done'] = False
+            else: 
+                st.session_state['mve_done'] = True
+                tz_London = pytz.timezone('Europe/London')
+                currentDateAndTime = datetime.now(tz_London)
+                st.session_state['time_submission'] = currentDateAndTime
+
+                # Update the dataframe
+                for col in ['mve1_m1', 'mve1_m2', 'mve1_m3', 'time_login', 'time_submission']:
+                    st.session_state['new_row'].loc[0, col] = st.session_state[col]
+                df = conn.read()
+                st.cache_data.clear()
+                st.session_state['new_row'] = st.session_state['new_row'].set_index('email')
+                df = df.set_index('email')
+                df.update(st.session_state['new_row'])
+                df = df.reset_index()
+                st.session_state['new_row'] = st.session_state['new_row'].reset_index() 
+                df = conn.update(worksheet = 'Sheet1', data = df)
+
+                st.warning('Successfully submitted.')
+        elif 'mve_done' in st.session_state and st.session_state['mve_done'] == True:
+            st.warning("Successfully submitted.")
+
+    # Model comparison form
+    st.subheader("Model comparison")
 
     # st.markdown('**Based on your experience of using the models ...**', unsafe_allow_html=True)
     st.markdown('Based on your experience in using the models ...', unsafe_allow_html=True)
@@ -139,6 +188,22 @@ def main():
                 st.session_state['mc_done'] = False
             else: 
                 st.session_state['mc_done'] = True
+                tz_London = pytz.timezone('Europe/London')
+                currentDateAndTime = datetime.now(tz_London)
+                st.session_state['time_submission'] = currentDateAndTime
+
+                # Update the dataframe
+                for col in ['mc1', 'mc2', 'mc3', 'mc4', 'mc5', 'mc6', 'time_login', 'time_submission']:
+                    st.session_state['new_row'].loc[0, col] = st.session_state[col]
+                df = conn.read()
+                st.cache_data.clear()
+                st.session_state['new_row'] = st.session_state['new_row'].set_index('email')
+                df = df.set_index('email')
+                df.update(st.session_state['new_row'])
+                df = df.reset_index()
+                st.session_state['new_row'] = st.session_state['new_row'].reset_index() 
+                df = conn.update(worksheet = 'Sheet1', data = df)
+
                 st.warning('Successfully submitted.')
         elif 'mc_done' in st.session_state and st.session_state['mc_done'] == True:
             st.warning("Successfully submitted.")
@@ -150,8 +215,35 @@ def main():
     # st.write("To which extent do you agree with the statement?")
     mu_placeholder = st.empty()
     with mu_placeholder.form(key = 'model_usage', clear_on_submit=False):
-        # mu1_answers = []
-        # st.write(model_usage_questions[0].get('question'))
+        # # Model - visual explanation usefulness question
+        # html_str_ve = f"""
+        # <style>
+        # p.a {{
+        # font: bold {17}px "Source Sans Pro", sans-serif;
+        # }}
+        # </style>
+        # <p class="a">{model_usage_questions[6].get('question')}</p>
+        # """
+
+        # # st.markdown(f"{model_usage_questions[0].get('question')}")
+        # st.markdown(html_str_ve, unsafe_allow_html=True)
+        # st.session_state['mve1_m1'] = question_options_display_sub(model_usage_questions[6].get('subquestions')[0], model_usage_questions[6].get('options'), val = 'mve1_m1')
+        # st.session_state['mve1_m2'] = question_options_display_sub(model_usage_questions[6].get('subquestions')[1], model_usage_questions[6].get('options'), val = 'mve1_m2')
+        # st.session_state['mve1_m3'] = question_options_display_sub(model_usage_questions[6].get('subquestions')[2], model_usage_questions[6].get('options'), val = 'mve1_m3')
+
+
+        # # Model usage
+        # # st.markdown('To which extent do you agree with the statement?', unsafe_allow_html=True)
+        # html_str_intro = f"""
+        # <style>
+        # p.a {{
+        # font: bold {19}px "Source Sans Pro", sans-serif;
+        # }}
+        # </style>
+        # <p class="a">To which extent do you agree with the statement?</p>
+        # """
+        # st.markdown(html_str_intro, unsafe_allow_html=True)
+    
         html_str_0 = f"""
         <style>
         p.a {{
@@ -248,9 +340,28 @@ def main():
                 st.session_state['mu_done'] = False
             else: 
                 st.session_state['mu_done'] = True
+                tz_London = pytz.timezone('Europe/London')
+                currentDateAndTime = datetime.now(tz_London)
+                st.session_state['time_submission'] = currentDateAndTime
+
+                # Update the dataframe
+                for col in ['mu1_m1', 'mu1_m2', 'mu1_m3', 'mu2_m1', 'mu2_m2', 'mu2_m3',
+                            'mu3_m1', 'mu3_m2', 'mu3_m3', 'mu4_m1', 'mu4_m2', 'mu4_m3',
+                            'mu5_m1', 'mu5_m2', 'mu5_m3', 'mu6_m1', 'mu6_m2', 'mu6_m3', 'time_login', 'time_submission']:
+                    st.session_state['new_row'].loc[0, col] = st.session_state[col]
+                df = conn.read()
+                st.cache_data.clear()
+                st.session_state['new_row'] = st.session_state['new_row'].set_index('email')
+                df = df.set_index('email')
+                df.update(st.session_state['new_row'])
+                df = df.reset_index()
+                st.session_state['new_row'] = st.session_state['new_row'].reset_index() 
+                df = conn.update(worksheet = 'Sheet1', data = df)
+
                 st.warning('Successfully submitted.')
         elif 'mu_done' in st.session_state and st.session_state['mu_done'] == True:
             st.warning("Successfully submitted.")
+    
     if type(st.session_state['fb']) == float and pd.isna(st.session_state['fb']):
         st.session_state['fb'] = st.text_input("**Any feedback** :grey[(please leave any additional comments here)]", '')
     elif 'fb' in st.session_state and st.session_state['fb'] is not None and st.session_state['fb'] != 'None_':
@@ -259,20 +370,22 @@ def main():
     
 
     if st.button("Finish"):
-        if 'mc_done' in st.session_state and 'mu_done' in st.session_state and st.session_state['mc_done'] and st.session_state['mu_done']:
+        if 'mc_done' in st.session_state and 'mu_done' in st.session_state and 'mve_done' in st.session_state and st.session_state['mc_done'] and st.session_state['mu_done'] and st.session_state['mve_done']:
             with st.spinner("Saving your answers ... ", show_time=False):
                 st.session_state['posttask_done'] = True
                 st.session_state['mu_done'] = False
                 st.session_state['mc_done'] = False
+                st.session_state['mve_done'] = False
                 tz_London = pytz.timezone('Europe/London')
                 currentDateAndTime = datetime.now(tz_London)
                 st.session_state['time_submission'] = currentDateAndTime
-                # if st.session_state['fb'] = 
+                
                 # Update the dataframe
-                for col in ['mc1', 'mc2', 'mc3', 'mc4', 'mc5', 'mc6', 
-                            'mu1_m1', 'mu1_m2', 'mu1_m3', 'mu2_m1', 'mu2_m2', 'mu2_m3',
-                            'mu3_m1', 'mu3_m2', 'mu3_m3', 'mu4_m1', 'mu4_m2', 'mu4_m3',
-                            'mu5_m1', 'mu5_m2', 'mu5_m3', 'mu6_m1', 'mu6_m2', 'mu6_m3', 'fb', 'posttask_done', 'time_login', 'time_submission']:
+                # for col in ['mc1', 'mc2', 'mc3', 'mc4', 'mc5', 'mc6', 'mve1_m1', 'mve1_m2', 'mve1_m3',
+                #             'mu1_m1', 'mu1_m2', 'mu1_m3', 'mu2_m1', 'mu2_m2', 'mu2_m3',
+                #             'mu3_m1', 'mu3_m2', 'mu3_m3', 'mu4_m1', 'mu4_m2', 'mu4_m3',
+                #             'mu5_m1', 'mu5_m2', 'mu5_m3', 'mu6_m1', 'mu6_m2', 'mu6_m3', 'fb', 'posttask_done', 'time_login', 'time_submission']:
+                for col in ['fb', 'posttask_done', 'time_login', 'time_submission']:
                     st.session_state['new_row'].loc[0, col] = st.session_state[col]
                 df = conn.read()
                 st.cache_data.clear()
