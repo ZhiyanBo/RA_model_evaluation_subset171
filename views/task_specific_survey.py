@@ -161,8 +161,8 @@ def main(df):
     else: st.switch_page('views/introduction.py')
 
     if st.session_state['task_done'] in [1, True, 'TRUE']:
-        st.session_state['all_ans_save'] == True
-    else: st.session_state['all_ans_save'] == False
+        st.session_state['all_ans_save'] = True
+    else: st.session_state['all_ans_save'] = False
 
     st.session_state['task_start'] = True
     st.session_state['pretask_start'] = True
