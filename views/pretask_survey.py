@@ -109,6 +109,12 @@ def main():
                 </html>
             """, unsafe_allow_html=True)
     
+    # General instruction
+    st.write('''
+             Instructions:
+             - Please click on **Submit** to save your answers for a completed subsection.
+             - Once all subsections are submitted, you can click on **Finish** to proceed to the next section.
+             - If you change your answers after submitting a subsection, please resubmit the subsection by clicking on **Submit** again. Otherwise, the new answers will not be automatically saved.''')    
 
     # Clinical expertise form
     st.subheader("Clinical expertise")
@@ -131,7 +137,27 @@ def main():
                 st.session_state['ce_done'] = False
             else: 
                 st.session_state['ce_done'] = True
+                tz_London = pytz.timezone('Europe/London')
+                currentDateAndTime = datetime.now(tz_London)
+                st.session_state['time_submission'] = currentDateAndTime
+                
+                # Update the dataframe
+                for col in ['ce1', 'ce2', 'ce3', 'ce4', 'time_login', 'time_submission']:
+                    st.session_state['new_row'].loc[0, col] = st.session_state[col]
+                    # st.write(st.session_state['new_row'])
+                # st.session_state['new_row']['pretask_done'] = 'True'
+                df = conn.read()
+                st.cache_data.clear()
+                st.session_state['new_row'] = st.session_state['new_row'].set_index('email')
+                df = df.set_index('email')
+                df.update(st.session_state['new_row'])
+                df = df.reset_index()
+                st.session_state['new_row'] = st.session_state['new_row'].reset_index()
+                    
+                # st.write(df[df['email'] == st.session_state['email']])
+                df = conn.update(worksheet = 'Sheet1', data = df)
                 st.warning("Successfully submitted.")
+
         elif 'ce_done' in st.session_state and st.session_state['ce_done'] == True:
             st.warning("Successfully submitted.")
     
@@ -157,7 +183,27 @@ def main():
                 st.session_state['ae_done'] = False
             else: 
                 st.session_state['ae_done'] = True
+                tz_London = pytz.timezone('Europe/London')
+                currentDateAndTime = datetime.now(tz_London)
+                st.session_state['time_submission'] = currentDateAndTime
+                
+                # Update the dataframe
+                for col in ['ae1', 'ae2', 'ae3', 'ae4', 'time_login', 'time_submission']:
+                    st.session_state['new_row'].loc[0, col] = st.session_state[col]
+                    # st.write(st.session_state['new_row'])
+                # st.session_state['new_row']['pretask_done'] = 'True'
+                df = conn.read()
+                st.cache_data.clear()
+                st.session_state['new_row'] = st.session_state['new_row'].set_index('email')
+                df = df.set_index('email')
+                df.update(st.session_state['new_row'])
+                df = df.reset_index()
+                st.session_state['new_row'] = st.session_state['new_row'].reset_index()
+                    
+                # st.write(df[df['email'] == st.session_state['email']])
+                df = conn.update(worksheet = 'Sheet1', data = df)
                 st.warning("Successfully submitted.")
+                
         elif 'ae_done' in st.session_state and st.session_state['ae_done'] == True:
             st.warning("Successfully submitted.")
 
@@ -180,6 +226,25 @@ def main():
                 st.session_state['ata_done'] = False
             else: 
                 st.session_state['ata_done'] = True
+                tz_London = pytz.timezone('Europe/London')
+                currentDateAndTime = datetime.now(tz_London)
+                st.session_state['time_submission'] = currentDateAndTime
+                
+                # Update the dataframe
+                for col in ['ata1', 'ata2', 'time_login', 'time_submission']:
+                    st.session_state['new_row'].loc[0, col] = st.session_state[col]
+                    # st.write(st.session_state['new_row'])
+                # st.session_state['new_row']['pretask_done'] = 'True'
+                df = conn.read()
+                st.cache_data.clear()
+                st.session_state['new_row'] = st.session_state['new_row'].set_index('email')
+                df = df.set_index('email')
+                df.update(st.session_state['new_row'])
+                df = df.reset_index()
+                st.session_state['new_row'] = st.session_state['new_row'].reset_index()
+                    
+                # st.write(df[df['email'] == st.session_state['email']])
+                df = conn.update(worksheet = 'Sheet1', data = df)
                 st.warning("Successfully submitted.")
         elif 'ata_done' in st.session_state and st.session_state['ata_done'] == True:
             st.warning("Successfully submitted.")
@@ -196,7 +261,8 @@ def main():
                 st.session_state['time_submission'] = currentDateAndTime
                 
                 # Update the dataframe
-                for col in ['ce1', 'ce2', 'ce3', 'ce4', 'ae1', 'ae2', 'ae3', 'ae4', 'ata1', 'ata2', 'pretask_done', 'time_login', 'time_submission']:
+                # for col in ['ce1', 'ce2', 'ce3', 'ce4', 'ae1', 'ae2', 'ae3', 'ae4', 'ata1', 'ata2', 'pretask_done', 'time_login', 'time_submission']:
+                for col in ['pretask_done', 'time_login', 'time_submission']:
                     st.session_state['new_row'].loc[0, col] = st.session_state[col]
                     # st.write(st.session_state['new_row'])
                 # st.session_state['new_row']['pretask_done'] = 'True'
