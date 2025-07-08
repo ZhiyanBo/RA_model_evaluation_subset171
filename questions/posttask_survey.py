@@ -15,6 +15,12 @@ options_model_none = ["Model 1: Whole image",
                       "Model 3: Joint patches",
                       "None of the models"]
 
+options_model_ve = ["1 - Completely useless: does not explain why the model makes the prediction at all",
+                    "2 - Not useful: provides some reasoning but is not helpful",
+                    "3 - Neutral: provides some reasoning but I base my judgement mainly on the prediction",
+                    "4 - Useful: helpful for explaining why the model makes the prediction",
+                    "5 - Highly useful: crucial for my judgement"]
+
 
 model_comparison_questions = [
     {
@@ -88,3 +94,11 @@ model_usage_questions = [
     }
 ]
 
+ve_usefulness_question = [
+    {
+        "question_number": 0,
+        "question": "How useful is the visual explanation in helping you assess the accuracy and trustworthiness of a prediction?",
+        "subquestions": options_model,
+        "options": options_model_ve,
+    },
+]
