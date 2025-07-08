@@ -71,6 +71,7 @@ def images_questions_display(df, idx):
             # Colour: F7CDA7, F7D5B8
             st.markdown(f'<p style="background-color:#F7D5B8; ">Model prediction (error): <strong>{predictions[model_idx]} ({errors[model_idx]})</strong></p>',unsafe_allow_html=True)
             image_click_pop_static(f"app/static/seed171/{dir_list[model_idx]}/heatmap_{filename}", width=2252)
+            # st.markdown('<p style="font-size: 15px;">1 - Strongest association with SvdH; 0 - Weakest association with SvdH</p>', unsafe_allow_html=True)
         st.markdown(":orange[* Click on images to open them in full size in new browser tabs.]")
         # --- Questions --- #
         question_placeholder = st.empty()
@@ -235,36 +236,64 @@ def main(df):
     
         # Check if all questions are answered:
         if 'NA_' not in dic_all_images.values():
-            st.warning("All questions are completed. Please click on **Finish** to save your answers and proceed to the next section.")
-            task_submitted = st.form_submit_button('Finish')
+            if st.session_state['task_done'] == False and st.session_state['all_ans_save'] == False:
+                with st.spinner("Saving your answers ... ", show_time=False):
+                    st.session_state['eval_all_images'] = dic_all_images
+                    st.session_state['task_done'] = False
+                    # Update the dataframe
+                    # df_new_row = st.session_state['new_row']
+                    # for col in ['eval_all_images', 'task_done']:
+                    tz_London = pytz.timezone('Europe/London')
+                    currentDateAndTime = datetime.now(tz_London)
+                    st.session_state['time_submission'] = currentDateAndTime
+                    st.session_state['new_row'].loc[0, 'time_login'] = st.session_state['time_login']
+                    st.session_state['new_row'].loc[0, 'task_done'] = st.session_state['task_done']
+                    st.session_state['new_row'].loc[0, 'eval_all_images'] = [st.session_state['eval_all_images']]
+                    st.session_state['new_row'].loc[0, 'time_submission'] = st.session_state['time_submission']
+                    # st.session_state['new_row'] = df_new_row
+                    # st.session_state['new_row'] = df_new_row
+                    df = conn.read()
+                    st.cache_data.clear()
+                    st.session_state['new_row'] = st.session_state['new_row'].set_index('email')
+                    df = df.set_index('email')
+                    df.update(st.session_state['new_row'])
+                    df = df.reset_index()
+                    st.session_state['new_row'] = st.session_state['new_row'].reset_index()
+                    df = conn.update(worksheet = 'Sheet1', data = df)
+                    st.session_state['all_ans_save'] = True
 
-            if task_submitted:
-            # if all(name in dic_all_images for name in answer_name_list):
-                if 'NA_' not in dic_all_images.values():
-                    with st.spinner("Saving your answers ... ", show_time=False):
-                        st.session_state['eval_all_images'] = dic_all_images
-                        st.session_state['task_done'] = True
-                        # Update the dataframe
-                        # df_new_row = st.session_state['new_row']
-                        # for col in ['eval_all_images', 'task_done']:
-                        tz_London = pytz.timezone('Europe/London')
-                        currentDateAndTime = datetime.now(tz_London)
-                        st.session_state['time_submission'] = currentDateAndTime
-                        st.session_state['new_row'].loc[0, 'time_login'] = st.session_state['time_login']
-                        st.session_state['new_row'].loc[0, 'task_done'] = st.session_state['task_done']
-                        st.session_state['new_row'].loc[0, 'eval_all_images'] = [st.session_state['eval_all_images']]
-                        st.session_state['new_row'].loc[0, 'time_submission'] = st.session_state['time_submission']
-                        # st.session_state['new_row'] = df_new_row
-                        df = conn.read()
-                        st.cache_data.clear()
-                        st.session_state['new_row'] = st.session_state['new_row'].set_index('email')
-                        df = df.set_index('email')
-                        df.update(st.session_state['new_row'])
-                        df = df.reset_index()
-                        st.session_state['new_row'] = st.session_state['new_row'].reset_index()
-                        df = conn.update(worksheet = 'Sheet1', data = df)
+            if st.session_state['all_ans_save'] == True:
+            
+                st.warning("All questions are completed. Please click on **Finish** to save your answers and proceed to the next section.")
+                task_submitted = st.form_submit_button('Finish')
 
-                        st.switch_page('views/posttask_survey.py')
+                if task_submitted:
+                # if all(name in dic_all_images for name in answer_name_list):
+                    if 'NA_' not in dic_all_images.values():
+                        with st.spinner("Saving your answers ... ", show_time=False):
+                            st.session_state['eval_all_images'] = dic_all_images
+                            st.session_state['task_done'] = True
+                            # Update the dataframe
+                            # df_new_row = st.session_state['new_row']
+                            # for col in ['eval_all_images', 'task_done']:
+                            tz_London = pytz.timezone('Europe/London')
+                            currentDateAndTime = datetime.now(tz_London)
+                            st.session_state['time_submission'] = currentDateAndTime
+                            st.session_state['new_row'].loc[0, 'time_login'] = st.session_state['time_login']
+                            st.session_state['new_row'].loc[0, 'task_done'] = st.session_state['task_done']
+                            st.session_state['new_row'].loc[0, 'eval_all_images'] = [st.session_state['eval_all_images']]
+                            st.session_state['new_row'].loc[0, 'time_submission'] = st.session_state['time_submission']
+                            # st.session_state['new_row'] = df_new_row
+                            df = conn.read()
+                            st.cache_data.clear()
+                            st.session_state['new_row'] = st.session_state['new_row'].set_index('email')
+                            df = df.set_index('email')
+                            df.update(st.session_state['new_row'])
+                            df = df.reset_index()
+                            st.session_state['new_row'] = st.session_state['new_row'].reset_index()
+                            df = conn.update(worksheet = 'Sheet1', data = df)
+
+                            st.switch_page('views/posttask_survey.py')
                 # else: 
                 #     st.warning("One or more fields are missing.")
                 #     st.session_state['task_done'] = False
@@ -274,6 +303,7 @@ def main(df):
                 #             unfinished_imgs = unfinished_imgs + f"{idx + 1}, "
                 #     st.warning(unfinished_imgs[:-2])
         else:
+            st.session_state['all_ans_save'] = False
             st.warning("One or more fields are missing")
             st.session_state['task_done'] = False
             unfinished_imgs = 'Images with missing answers: '
