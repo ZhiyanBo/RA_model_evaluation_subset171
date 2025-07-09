@@ -144,24 +144,25 @@ def main():
                 st.warning("One or more fields are missing.")
                 st.session_state['mve_done'] = False
             else: 
-                st.session_state['mve_done'] = True
-                tz_London = pytz.timezone('Europe/London')
-                currentDateAndTime = datetime.now(tz_London)
-                st.session_state['time_submission'] = currentDateAndTime
+                with st.spinner("Saving your answers ... ", show_time=False):
+                    st.session_state['mve_done'] = True
+                    tz_London = pytz.timezone('Europe/London')
+                    currentDateAndTime = datetime.now(tz_London)
+                    st.session_state['time_submission'] = currentDateAndTime
 
-                # Update the dataframe
-                for col in ['mve1_m1', 'mve1_m2', 'mve1_m3', 'time_login', 'time_submission']:
-                    st.session_state['new_row'].loc[0, col] = st.session_state[col]
-                df = conn.read()
-                st.cache_data.clear()
-                st.session_state['new_row'] = st.session_state['new_row'].set_index('email')
-                df = df.set_index('email')
-                df.update(st.session_state['new_row'])
-                df = df.reset_index()
-                st.session_state['new_row'] = st.session_state['new_row'].reset_index() 
-                df = conn.update(worksheet = 'Sheet1', data = df)
+                    # Update the dataframe
+                    for col in ['mve1_m1', 'mve1_m2', 'mve1_m3', 'time_login', 'time_submission']:
+                        st.session_state['new_row'].loc[0, col] = st.session_state[col]
+                    df = conn.read()
+                    st.cache_data.clear()
+                    st.session_state['new_row'] = st.session_state['new_row'].set_index('email')
+                    df = df.set_index('email')
+                    df.update(st.session_state['new_row'])
+                    df = df.reset_index()
+                    st.session_state['new_row'] = st.session_state['new_row'].reset_index() 
+                    df = conn.update(worksheet = 'Sheet1', data = df)
 
-                st.warning('Successfully submitted.')
+                    st.warning('Successfully submitted.')
         elif 'mve_done' in st.session_state and st.session_state['mve_done'] == True:
             st.warning("Successfully submitted.")
 
@@ -187,24 +188,25 @@ def main():
                 st.warning("One or more fields are missing.")
                 st.session_state['mc_done'] = False
             else: 
-                st.session_state['mc_done'] = True
-                tz_London = pytz.timezone('Europe/London')
-                currentDateAndTime = datetime.now(tz_London)
-                st.session_state['time_submission'] = currentDateAndTime
+                with st.spinner("Saving your answers ... ", show_time=False):
+                    st.session_state['mc_done'] = True
+                    tz_London = pytz.timezone('Europe/London')
+                    currentDateAndTime = datetime.now(tz_London)
+                    st.session_state['time_submission'] = currentDateAndTime
 
-                # Update the dataframe
-                for col in ['mc1', 'mc2', 'mc3', 'mc4', 'mc5', 'mc6', 'time_login', 'time_submission']:
-                    st.session_state['new_row'].loc[0, col] = st.session_state[col]
-                df = conn.read()
-                st.cache_data.clear()
-                st.session_state['new_row'] = st.session_state['new_row'].set_index('email')
-                df = df.set_index('email')
-                df.update(st.session_state['new_row'])
-                df = df.reset_index()
-                st.session_state['new_row'] = st.session_state['new_row'].reset_index() 
-                df = conn.update(worksheet = 'Sheet1', data = df)
+                    # Update the dataframe
+                    for col in ['mc1', 'mc2', 'mc3', 'mc4', 'mc5', 'mc6', 'time_login', 'time_submission']:
+                        st.session_state['new_row'].loc[0, col] = st.session_state[col]
+                    df = conn.read()
+                    st.cache_data.clear()
+                    st.session_state['new_row'] = st.session_state['new_row'].set_index('email')
+                    df = df.set_index('email')
+                    df.update(st.session_state['new_row'])
+                    df = df.reset_index()
+                    st.session_state['new_row'] = st.session_state['new_row'].reset_index() 
+                    df = conn.update(worksheet = 'Sheet1', data = df)
 
-                st.warning('Successfully submitted.')
+                    st.warning('Successfully submitted.')
         elif 'mc_done' in st.session_state and st.session_state['mc_done'] == True:
             st.warning("Successfully submitted.")
 
@@ -339,26 +341,27 @@ def main():
                 st.warning("One or more fields are missing.")
                 st.session_state['mu_done'] = False
             else: 
-                st.session_state['mu_done'] = True
-                tz_London = pytz.timezone('Europe/London')
-                currentDateAndTime = datetime.now(tz_London)
-                st.session_state['time_submission'] = currentDateAndTime
+                with st.spinner("Saving your answers ... ", show_time=False):
+                    st.session_state['mu_done'] = True
+                    tz_London = pytz.timezone('Europe/London')
+                    currentDateAndTime = datetime.now(tz_London)
+                    st.session_state['time_submission'] = currentDateAndTime
 
-                # Update the dataframe
-                for col in ['mu1_m1', 'mu1_m2', 'mu1_m3', 'mu2_m1', 'mu2_m2', 'mu2_m3',
-                            'mu3_m1', 'mu3_m2', 'mu3_m3', 'mu4_m1', 'mu4_m2', 'mu4_m3',
-                            'mu5_m1', 'mu5_m2', 'mu5_m3', 'mu6_m1', 'mu6_m2', 'mu6_m3', 'time_login', 'time_submission']:
-                    st.session_state['new_row'].loc[0, col] = st.session_state[col]
-                df = conn.read()
-                st.cache_data.clear()
-                st.session_state['new_row'] = st.session_state['new_row'].set_index('email')
-                df = df.set_index('email')
-                df.update(st.session_state['new_row'])
-                df = df.reset_index()
-                st.session_state['new_row'] = st.session_state['new_row'].reset_index() 
-                df = conn.update(worksheet = 'Sheet1', data = df)
+                    # Update the dataframe
+                    for col in ['mu1_m1', 'mu1_m2', 'mu1_m3', 'mu2_m1', 'mu2_m2', 'mu2_m3',
+                                'mu3_m1', 'mu3_m2', 'mu3_m3', 'mu4_m1', 'mu4_m2', 'mu4_m3',
+                                'mu5_m1', 'mu5_m2', 'mu5_m3', 'mu6_m1', 'mu6_m2', 'mu6_m3', 'time_login', 'time_submission']:
+                        st.session_state['new_row'].loc[0, col] = st.session_state[col]
+                    df = conn.read()
+                    st.cache_data.clear()
+                    st.session_state['new_row'] = st.session_state['new_row'].set_index('email')
+                    df = df.set_index('email')
+                    df.update(st.session_state['new_row'])
+                    df = df.reset_index()
+                    st.session_state['new_row'] = st.session_state['new_row'].reset_index() 
+                    df = conn.update(worksheet = 'Sheet1', data = df)
 
-                st.warning('Successfully submitted.')
+                    st.warning('Successfully submitted.')
         elif 'mu_done' in st.session_state and st.session_state['mu_done'] == True:
             st.warning("Successfully submitted.")
     
