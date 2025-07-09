@@ -110,11 +110,26 @@ def main():
             """, unsafe_allow_html=True)
     
     # General instruction
-    st.write('''
-             Instructions:
-             - Please click on **Submit** to save your answers for a completed subsection.
-             - Once all subsections are submitted, you can click on **Finish** to proceed to the next section.
-             - If you change your answers after submitting a subsection, please resubmit the subsection by clicking on **Submit** again. Otherwise, the new answers will not be automatically saved.''')    
+    # st.write('''
+    #          Instructions:
+    #          - Please click on **Submit** to save your answers for a completed subsection.
+    #          - Once all subsections are submitted, you can click on **Finish** to proceed to the next section.
+    #          - If you change your answers after submitting a subsection, please resubmit the subsection by clicking on **Submit** again. Otherwise, the new answers will not be automatically saved.''')    
+    def ColourBulletPoint(title, txt1,txt2,txt3, colour = 'rgb(217, 90, 0)', font_size_title = '17px', font_size_body = '16px'):
+        htmlstr = f"""
+        <p style="font-style: italic; font-size: {font_size_title}; color: {colour}; font-weight: 600;">{title}</p>
+        <ul>
+        <li style="font-style: italic; color: {colour}; font-size: {font_size_body};">{txt1}</li>
+        <li style="font-style: italic; color: {colour}; font-size: {font_size_body};">{txt2}</li>
+        <li style="font-style: italic; color: {colour}; font-size: {font_size_body};">{txt3}</li>
+        <ul>
+        """
+        st.markdown(htmlstr, unsafe_allow_html=True)
+    # st.markdown(":orange[_**Instructions:**_]")
+    ColourBulletPoint(title = 'Instructions:',
+                      txt1 = 'Please click on <strong>Submit</strong> to save your answers for a completed subsection.',
+                      txt2 = 'Once all subsections are submitted, you can click on <strong>Finish</strong> to proceed to the next section.',
+                      txt3 = 'If you change your answers after submitting a subsection, please resubmit the subsection by clicking on <strong>Submit</strong> again. Otherwise, the new answers will not be automatically saved.')
 
     # Clinical expertise form
     st.subheader("Clinical expertise")
