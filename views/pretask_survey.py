@@ -143,7 +143,13 @@ def main():
                       txt1 = 'Please click on <strong>Submit</strong> to save your answers for a completed subsection.',
                       txt2 = 'Once all subsections are submitted, you can click on <strong>Finish</strong> to proceed to the next section.',
                       txt3 = 'If you change your answers after submitting a subsection, please resubmit the subsection by clicking on <strong>Submit</strong> again. Otherwise, the new answers will not be automatically saved.')
-
+    
+    def submit_subsection_ce():
+            st.session_state['ce_submitted'] = True
+    def submit_subsection_ae():
+            st.session_state['ae_submitted'] = True
+    def submit_subsection_ata():
+            st.session_state['ata_submitted'] = True
 
     # Clinical expertise form
     st.subheader("Clinical expertise")
@@ -156,14 +162,16 @@ def main():
         st.session_state['ce3'] = question_options_display(clinical_expertise_questions, 2, val = 'ce3')
         st.session_state['ce4'] = question_options_display(clinical_expertise_questions, 3, val = 'ce4')
 
-        ce_done = st.form_submit_button("Submit")
+        ce_done = st.form_submit_button("Submit", on_click=submit_subsection_ce)
         # if 'ce_done' in st.session_state and st.session_state['ce_done'] == True:
         #     st.warning("Successfully submitted.")
 
-        if ce_done:
+        if 'ce_submitted' in st.session_state and st.session_state['ce_submitted'] == True:
             if None in [st.session_state['ce1'],st.session_state['ce2'], st.session_state['ce3'], st.session_state['ce4']]:
                 st.warning("One or more fields are missing.")
                 st.session_state['ce_done'] = False
+                st.session_state['ce_submitted'] = False
+                st.switch_page('views/pretask_survey.py')
             else: 
                 with st.spinner("Saving your answers ... ", show_time=False):
                     st.session_state['ce_done'] = True
@@ -187,9 +195,17 @@ def main():
                     # st.write(df[df['email'] == st.session_state['email']])
                     df = conn.update(worksheet = 'Sheet1', data = df)
                     st.warning("Successfully submitted.")
+                    st.session_state['ce_submitted'] = False
+                    st.switch_page('views/pretask_survey.py')
 
-        elif 'ce_done' in st.session_state and st.session_state['ce_done'] == True:
+        elif 'ce_submitted' in st.session_state and 'ce_done' in st.session_state and st.session_state['ce_done'] == True:
             st.warning("Successfully submitted.")
+        
+        elif 'ce_submitted' in st.session_state and 'ce_done' in st.session_state and st.session_state['ce_done'] == False:
+            if None in [st.session_state['ce1'],st.session_state['ce2'], st.session_state['ce3'], st.session_state['ce4']]:
+                st.warning("One or more fields are missing.")
+            else:
+                st.warning("Successfully submitted.")
     
     # AI expertise form
     st.subheader("AI expertise")
@@ -203,14 +219,16 @@ def main():
         st.session_state['ae3'] = question_options_display(ai_expertise_questions, 2, val = 'ae3')
         st.session_state['ae4'] = question_options_display(ai_expertise_questions, 3, val = 'ae4')
 
-        ae_done = st.form_submit_button("Submit")
+        ae_done = st.form_submit_button("Submit", on_click=submit_subsection_ae)
         # if 'ae_done' in st.session_state and st.session_state['ae_done'] == True:
         #     st.warning("Successfully submitted.")
 
-        if ae_done:
+        if 'ae_submitted' in st.session_state and st.session_state['ae_submitted'] == True:
             if None in [st.session_state['ae1'],st.session_state['ae2'], st.session_state['ae3'], st.session_state['ae4']]:
                 st.warning("One or more fields are missing.")
                 st.session_state['ae_done'] = False
+                st.session_state['ae_submitted'] = False
+                st.switch_page('views/pretask_survey.py')
             else: 
                 with st.spinner("Saving your answers ... ", show_time=False):
                     st.session_state['ae_done'] = True
@@ -234,9 +252,17 @@ def main():
                     # st.write(df[df['email'] == st.session_state['email']])
                     df = conn.update(worksheet = 'Sheet1', data = df)
                     st.warning("Successfully submitted.")
+                    st.session_state['ae_submitted'] = False
+                    st.switch_page('views/pretask_survey.py')
                 
-        elif 'ae_done' in st.session_state and st.session_state['ae_done'] == True:
+        elif 'ae_submitted' in st.session_state and 'ae_done' in st.session_state and st.session_state['ae_done'] == True:
             st.warning("Successfully submitted.")
+        
+        elif 'ae_submitted' in st.session_state and 'ae_done' in st.session_state and st.session_state['ae_done'] == False:
+            if None in [st.session_state['ae1'],st.session_state['ae2'], st.session_state['ae3'], st.session_state['ae4']]:
+                st.warning("One or more fields are missing.")
+            else:
+                st.warning("Successfully submitted.")
 
     # Attitude towards AI form
     st.subheader("Attitude towards AI")
@@ -247,14 +273,16 @@ def main():
         st.session_state['ata1'] = question_options_display(ai_attitute_questions, 0, val = 'ata1')
         st.session_state['ata2'] = question_options_display(ai_attitute_questions, 1, val = 'ata2')
 
-        ata_done = st.form_submit_button("Submit")
+        ata_done = st.form_submit_button("Submit", on_click=submit_subsection_ata)
         # if 'ata_done' in st.session_state and st.session_state['ata_done'] == True:
         #     st.warning("Successfully submitted.")
 
-        if ata_done:
+        if 'ata_submitted' in st.session_state and st.session_state['ata_submitted'] == True:
             if None in [st.session_state['ata1'], st.session_state['ata2']]:
                 st.warning("One or more fields are missing.")
                 st.session_state['ata_done'] = False
+                st.session_state['ata_submitted'] = False
+                st.switch_page('views/pretask_survey.py')
             else: 
                 with st.spinner("Saving your answers ... ", show_time=False):
                     st.session_state['ata_done'] = True
@@ -278,8 +306,17 @@ def main():
                     # st.write(df[df['email'] == st.session_state['email']])
                     df = conn.update(worksheet = 'Sheet1', data = df)
                     st.warning("Successfully submitted.")
-        elif 'ata_done' in st.session_state and st.session_state['ata_done'] == True:
+                    st.session_state['ata_submitted'] = False
+                    st.switch_page('views/pretask_survey.py')
+
+        elif 'ata_submitted' in st.session_state and 'ata_done' in st.session_state and st.session_state['ata_done'] == True:
             st.warning("Successfully submitted.")
+        
+        elif 'ata_submitted' in st.session_state and 'ata_done' in st.session_state and st.session_state['ata_done'] == False:
+            if None in [st.session_state['ata1'], st.session_state['ata2']]:
+                st.warning("One or more fields are missing.")
+            else:
+                st.warning("Successfully submitted.")
     
     if st.button("Finish"):
         if ('ce_done' in st.session_state) and ('ae_done' in st.session_state) and ('ata_done' in st.session_state) and (st.session_state['ce_done'] and st.session_state['ae_done'] and st.session_state['ata_done']):
@@ -308,6 +345,10 @@ def main():
                     
                 # st.write(df[df['email'] == st.session_state['email']])
                 df = conn.update(worksheet = 'Sheet1', data = df)
+                del st.session_state['ce_submitted']
+                del st.session_state['ae_submitted']
+                del st.session_state['ata_submitted']
+
                 st.switch_page('views/task_specific_survey.py')
 
         else: 
