@@ -116,7 +116,13 @@ def main():
         image_click_pop_static("app/static/seed171/RP_AMIL_bar/heatmap_DX207586.jpg", width = 2252)
     with c03:
         image_click_pop_static("app/static/seed171/JL_AMIL_bar/heatmap_DX207586.jpg", width = 2252)
-
+    
+    def submit_subsection_mve():
+            st.session_state['mve_submitted'] = True
+    def submit_subsection_mc():
+            st.session_state['mc_submitted'] = True
+    def submit_subsection_mu():
+            st.session_state['mu_submitted'] = True
 
     # Usefulness of VE
     st.subheader("Usefulness of the visual explanation")
@@ -137,12 +143,14 @@ def main():
         st.session_state['mve1_m1'] = question_options_display_sub(ve_usefulness_question[0].get('subquestions')[0], ve_usefulness_question[0].get('options'), val = 'mve1_m1')
         st.session_state['mve1_m2'] = question_options_display_sub(ve_usefulness_question[0].get('subquestions')[1], ve_usefulness_question[0].get('options'), val = 'mve1_m2')
         st.session_state['mve1_m3'] = question_options_display_sub(ve_usefulness_question[0].get('subquestions')[2], ve_usefulness_question[0].get('options'), val = 'mve1_m3')
-        mve_done = st.form_submit_button("Submit")
+        mve_done = st.form_submit_button("Submit", on_click=submit_subsection_mve)
 
-        if mve_done:
+        if 'mve_submitted' in st.session_state and st.session_state['mve_submitted'] == True:
             if None in [st.session_state['mve1_m1'], st.session_state['mve1_m2'], st.session_state['mve1_m3']]:
                 st.warning("One or more fields are missing.")
                 st.session_state['mve_done'] = False
+                st.session_state['mve_submitted'] = False
+                st.switch_page('views/posttask_survey.py')
             else: 
                 with st.spinner("Saving your answers ... ", show_time=False):
                     st.session_state['mve_done'] = True
@@ -163,8 +171,17 @@ def main():
                     df = conn.update(worksheet = 'Sheet1', data = df)
 
                     st.warning('Successfully submitted.')
-        elif 'mve_done' in st.session_state and st.session_state['mve_done'] == True:
+                    st.session_state['mve_submitted'] = False
+                    st.switch_page('views/posttask_survey.py')
+
+        elif 'mve_submitted' in st.session_state and 'mve_done' in st.session_state and st.session_state['mve_done'] == True:
             st.warning("Successfully submitted.")
+        
+        elif 'mve_submitted' in st.session_state and 'mve_done' in st.session_state and st.session_state['mve_done'] == False:
+            if None in [st.session_state['mve1_m1'], st.session_state['mve1_m2'], st.session_state['mve1_m3']]:
+                st.warning("One or more fields are missing.")
+            else:
+                st.warning("Successfully submitted.")
 
     # Model comparison form
     st.subheader("Model comparison")
@@ -181,12 +198,14 @@ def main():
             st.session_state[f'mc{i+1}'] = question_options_display(model_comparison_questions, i, val = val_list[i])
             mc_answs += [st.session_state[f'mc{i+1}']]
         # mc1, mc2, mc3, mc4, mc5, mc6 = mc_answs
-        mc_done = st.form_submit_button("Submit")
+        mc_done = st.form_submit_button("Submit", on_click=submit_subsection_mc)
 
-        if mc_done:
+        if 'mc_submitted' in st.session_state and st.session_state['mc_submitted'] == True:
             if None in mc_answs:
                 st.warning("One or more fields are missing.")
                 st.session_state['mc_done'] = False
+                st.session_state['mc_submitted'] = False
+                st.switch_page('views/posttask_survey.py')
             else: 
                 with st.spinner("Saving your answers ... ", show_time=False):
                     st.session_state['mc_done'] = True
@@ -207,8 +226,17 @@ def main():
                     df = conn.update(worksheet = 'Sheet1', data = df)
 
                     st.warning('Successfully submitted.')
-        elif 'mc_done' in st.session_state and st.session_state['mc_done'] == True:
+                    st.session_state['mc_submitted'] = False
+                    st.switch_page('views/posttask_survey.py')
+                
+        elif 'mc_submitted' in st.session_state and 'mc_done' in st.session_state and st.session_state['mc_done'] == True:
             st.warning("Successfully submitted.")
+        
+        elif 'mc_submitted' in st.session_state and 'mc_done' in st.session_state and st.session_state['mc_done'] == False:
+            if None in mc_answs:
+                st.warning("One or more fields are missing.")
+            else:
+                st.warning("Successfully submitted.")
 
     # Model usage form
     st.subheader('Model usage')
@@ -330,16 +358,18 @@ def main():
         st.session_state['mu6_m2'] = question_options_display_sub(model_usage_questions[5].get('subquestions')[1], model_usage_questions[5].get('options'), val = 'mu6_m2')
         st.session_state['mu6_m3'] = question_options_display_sub(model_usage_questions[5].get('subquestions')[2], model_usage_questions[5].get('options'), val = 'mu6_m3')
 
-        mu_done = st.form_submit_button("Submit")
+        mu_done = st.form_submit_button("Submit", on_click=submit_subsection_mu)
         # if 'mu_done' in st.session_state and st.session_state['mu_done'] == True:
         #     st.warning("Successfully submitted.")
 
-        if mu_done:
+        if 'mu_submitted' in st.session_state and st.session_state['mu_submitted'] == True:
             if None in [st.session_state['mu1_m1'], st.session_state['mu1_m2'], st.session_state['mu1_m3'],st.session_state['mu2_m1'], st.session_state['mu2_m2'], st.session_state['mu2_m3'],
                         st.session_state['mu3_m1'], st.session_state['mu3_m2'], st.session_state['mu3_m3'],st.session_state['mu4_m1'], st.session_state['mu4_m2'], st.session_state['mu4_m3'],
                         st.session_state['mu5_m1'], st.session_state['mu5_m2'], st.session_state['mu5_m3'],st.session_state['mu6_m1'], st.session_state['mu6_m2'], st.session_state['mu6_m3']]:
                 st.warning("One or more fields are missing.")
                 st.session_state['mu_done'] = False
+                st.session_state['mu_submitted'] = False
+                st.switch_page('views/posttask_survey.py')
             else: 
                 with st.spinner("Saving your answers ... ", show_time=False):
                     st.session_state['mu_done'] = True
@@ -362,8 +392,19 @@ def main():
                     df = conn.update(worksheet = 'Sheet1', data = df)
 
                     st.warning('Successfully submitted.')
-        elif 'mu_done' in st.session_state and st.session_state['mu_done'] == True:
+                    st.session_state['mu_submitted'] = False
+                    st.switch_page('views/posttask_survey.py')
+
+        elif 'mu_submitted' in st.session_state and 'mu_done' in st.session_state and st.session_state['mu_done'] == True:
             st.warning("Successfully submitted.")
+        
+        elif 'mu_submitted' in st.session_state and 'mu_done' in st.session_state and st.session_state['mu_done'] == False:
+            if None in [st.session_state['mu1_m1'], st.session_state['mu1_m2'], st.session_state['mu1_m3'],st.session_state['mu2_m1'], st.session_state['mu2_m2'], st.session_state['mu2_m3'],
+                        st.session_state['mu3_m1'], st.session_state['mu3_m2'], st.session_state['mu3_m3'],st.session_state['mu4_m1'], st.session_state['mu4_m2'], st.session_state['mu4_m3'],
+                        st.session_state['mu5_m1'], st.session_state['mu5_m2'], st.session_state['mu5_m3'],st.session_state['mu6_m1'], st.session_state['mu6_m2'], st.session_state['mu6_m3']]:
+                st.warning("One or more fields are missing.")
+            else:
+                st.warning("Successfully submitted.")
     
     if type(st.session_state['fb']) == float and pd.isna(st.session_state['fb']):
         st.session_state['fb'] = st.text_input("**Any feedback** :grey[(please leave any additional comments here)]", '')
@@ -399,6 +440,9 @@ def main():
                 st.session_state['new_row'] = st.session_state['new_row'].reset_index()
                     
                 df = conn.update(worksheet = 'Sheet1', data = df)
+                del st.session_state['mve_submitted']
+                del st.session_state['mc_submitted']
+                del st.session_state['mu_submitted']
                 st.switch_page('views/end_page.py')
         else: 
             st.warning("One or more sections are not submitted.")
