@@ -265,6 +265,7 @@ def main(df):
                     st.session_state['new_row'] = st.session_state['new_row'].reset_index()
                     df = conn.update(worksheet = 'Sheet1', data = df)
                     st.session_state['all_ans_save'] = True
+                    st.switch_page('views/task_specific_survey.py')
 
             if st.session_state['all_ans_save'] == True:
             
@@ -340,6 +341,7 @@ def main(df):
                     df = df.reset_index()
                     st.session_state['new_row'] = st.session_state['new_row'].reset_index()
                     df = conn.update(worksheet = 'Sheet1', data = df)
+                    st.switch_page('views/task_specific_survey.py')
                     # def scroll_to(element_id):
 
 
