@@ -133,7 +133,7 @@ def images_questions_display(df, idx):
 
  # Create a connection object.
 conn = st.connection("gsheets", type=GSheetsConnection)
-df = conn.read()
+# df = conn.read()
 # st.table(df)
 st.cache_data.clear()
 
@@ -148,17 +148,21 @@ st.cache_data.clear()
 
 # st.markdown(html_scoreBackground, unsafe_allow_html=True)
 
-def main(df):
-    # if st.session_state['task_start'] == False:
-    #     # Create a connection object.
-    #     conn = st.connection("gsheets", type=GSheetsConnection)
-    #     df = conn.read()
-    #     # st.table(df)
-    #     st.cache_data.clear()
+def main():
+    conn = st.connection("gsheets", type=GSheetsConnection)
+    if ('task_start' in st.session_state and st.session_state['task_start'] == False) or ('task_start' not in st.session_state):
+        # Create a connection object.
+        conn = st.connection("gsheets", type=GSheetsConnection)
+        df = conn.read()
+        # time.sleep(2)
+        st.cache_data.clear()
+        if 'email' in st.session_state:
+            st.session_state['new_row'] = match_session_record(df, st.session_state['email'])
+        else: st.switch_page('views/introduction.py')
     
-    if 'email' in st.session_state:
-        st.session_state['new_row'] = match_session_record(df, st.session_state['email'])
-    else: st.switch_page('views/introduction.py')
+    # if 'email' in st.session_state:
+    #     st.session_state['new_row'] = match_session_record(df, st.session_state['email'])
+    # else: st.switch_page('views/introduction.py')
 
     if st.session_state['task_done'] in [1, True, 'TRUE'] or ('all_ans_save' in st.session_state and st.session_state['all_ans_save'] == True):
         st.session_state['all_ans_save'] = True
@@ -220,6 +224,7 @@ def main(df):
             """, unsafe_allow_html=True)
     
     # st.write(st.session_state['new_row'])
+    # st.write(st.session_state)
     # st.write(ast.literal_eval(st.session_state['eval_all_images'])[0])
     
     task_placeholder = st.empty()
@@ -228,13 +233,46 @@ def main(df):
         dic_all_images = {}
         for img_idx in range(len(df_samples)):
             st.session_state[f'im_{img_idx}_done'] = False
-            img_answers = images_questions_display(df_samples, img_idx)
-            # st.write()
-            # Set image completion status
-            if 'NA_' in img_answers.values():
-                st.session_state[f'im_{img_idx}_done'] = False
-            else: st.session_state[f'im_{img_idx}_done'] = True
-            dic_all_images.update(img_answers)
+            with st.container(border = True):
+                img_answers = images_questions_display(df_samples, img_idx)
+                # st.write()
+                # Set image completion status
+                if 'NA_' in img_answers.values():
+                    st.session_state[f'im_{img_idx}_done'] = False
+                else: st.session_state[f'im_{img_idx}_done'] = True
+                dic_all_images.update(img_answers)
+                if img_idx % 2 == 0:
+                    # st.markdown("""<div id = 'odd-frame'></div>""", unsafe_allow_html=True)
+                    st.markdown('<span class="odd-frame"/>', unsafe_allow_html=True)
+                else:
+                    # st.write('Even')
+                    st.markdown('<span class="even-frame"/>', unsafe_allow_html=True)
+
+        st.markdown(
+                """
+            <style>
+                div[data-testid="stVerticalBlockBorderWrapper"]:is(.st-emotion-cache-4uzi61.eu6p4el5):has(span):has(.odd-frame) {
+                    border: 4px solid #66CDAA;
+                }
+            </style>
+            <style>
+                div[data-testid="stVerticalBlockBorderWrapper"]:is(.st-emotion-cache-4uzi61.eu6p4el5):has(span):has(.even-frame) {
+                    border: 4px solid #9370DB;
+                }
+            </style>
+            """,
+                unsafe_allow_html=True,
+            )
+        # st.markdown(
+        #         """
+        #     <style>
+        #         div[data-testid="stVerticalBlockBorderWrapper"]:is(.st-emotion-cache-4uzi61.eu6p4el5):has(span):has(.even-frame) {
+        #             border: 4px solid #9370DB;
+        #         }
+        #     </style>
+        #     """,
+        #         unsafe_allow_html=True,
+        #     )
 
         st.session_state['eval_all_images'] = dic_all_images
     
@@ -297,6 +335,12 @@ def main(df):
                             df = df.reset_index()
                             st.session_state['new_row'] = st.session_state['new_row'].reset_index()
                             df = conn.update(worksheet = 'Sheet1', data = df)
+                            if 'ce_submitted' in st.session_state: del st.session_state['ce_submitted']
+                            if 'ae_submitted' in st.session_state: del st.session_state['ae_submitted']
+                            if 'ata_submitted' in st.session_state: del st.session_state['ata_submitted']
+                            if 'mve_submitted' in st.session_state: del st.session_state['mve_submitted']
+                            if 'mc_submitted' in st.session_state: del st.session_state['mc_submitted']
+                            if 'mu_submitted' in st.session_state: del st.session_state['mu_submitted']
 
                             st.switch_page('views/posttask_survey.py')
                 # else: 
@@ -345,7 +389,7 @@ def main(df):
                     # def scroll_to(element_id):
 
 
-main(df)
+main()
 
 
 # <div class="st-emotion-cache-2qp9ou etvjjhi0">Average SvdH score from clinicians: 1.5</div>
