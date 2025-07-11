@@ -449,6 +449,10 @@ def main():
             st.warning('Please enter you email address.')
             st.session_state['intro_done'] = False
         else:
+            if 'pretask_start' in st.session_state: del st.session_state['pretask_start']
+            if 'task_start' in st.session_state: del st.session_state['task_start']
+            if 'posttask_start' in st.session_state: del st.session_state['posttask_start']
+            if 'end_start' in st.session_state: del st.session_state['end_start']
             # st.write(f"St.email = {email_add}")
             if email_add in df['email'].tolist():
                 st.session_state['intro_done'] = True
