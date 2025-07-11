@@ -22,7 +22,7 @@ conn = st.connection("gsheets", type=GSheetsConnection)
 
 # st.write(conn)
 
-df = conn.read()
+# df = conn.read()
 
 # st.text(df.columns.values)
 
@@ -37,14 +37,16 @@ def question_options_display_sub(question, options, default_op = None, val = '')
     
 
 def main():
-    # load google sheet
     conn = st.connection("gsheets", type=GSheetsConnection)
-    df = conn.read()
-    # st.table(df)
-    st.cache_data.clear()
-    if 'email' in st.session_state:
-        st.session_state['new_row'] = match_session_record(df, st.session_state['email'])
-    else: st.switch_page('views/introduction.py')
+    if ('posttask_start' in st.session_state and st.session_state['posttask_start'] == False) or ('posttask_start' not in st.session_state):
+    # load google sheet
+        conn = st.connection("gsheets", type=GSheetsConnection)
+        df = conn.read()
+        # st.table(df)
+        st.cache_data.clear()
+        if 'email' in st.session_state:
+            st.session_state['new_row'] = match_session_record(df, st.session_state['email'])
+        else: st.switch_page('views/introduction.py')
     
     st.session_state['posttask_start'] = True
     st.session_state['task_start'] = True
@@ -443,6 +445,9 @@ def main():
                 del st.session_state['mve_submitted']
                 del st.session_state['mc_submitted']
                 del st.session_state['mu_submitted']
+                if 'ce_submitted' in st.session_state: del st.session_state['ce_submitted']
+                if 'ae_submitted' in st.session_state: del st.session_state['ae_submitted']
+                if 'ata_submitted' in st.session_state: del st.session_state['ata_submitted']
                 st.switch_page('views/end_page.py')
         else: 
             st.warning("One or more sections are not submitted.")
