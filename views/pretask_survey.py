@@ -18,7 +18,7 @@ load_css(css_path)
 
 # Create a connection object.
 conn = st.connection("gsheets", type=GSheetsConnection)
-df = conn.read()
+# df = conn.read()
 # st.table(df)
 
 # st.text(df.columns.values)
@@ -48,18 +48,31 @@ def question_options_display(questions, idx, default_op = None, val = ''):
 #         return .index(st.session_state[val])
 #     else: return default
 
+
 def main():
-    # Create a connection object.
     conn = st.connection("gsheets", type=GSheetsConnection)
-    df = conn.read()
-    # st.table(df)
-    st.cache_data.clear()
+    if ('pretask_start' in st.session_state and st.session_state['pretask_start'] == False) or ('pretask_start' not in st.session_state):
+        # Create a connection object.
+        conn = st.connection("gsheets", type=GSheetsConnection)
+        df = conn.read()
+        # time.sleep(2)
+        st.cache_data.clear()
+        if 'email' in st.session_state:
+            st.session_state['new_row'] = match_session_record(df, st.session_state['email'])
+        else: st.switch_page('views/introduction.py')
+
+    # # load google sheet
+    # conn = st.connection("gsheets", type=GSheetsConnection)
+    # df = conn.read()
+    # # st.table(df)
+    # st.cache_data.clear()
+
     # st.write(st.session_state)
-    # st.write(df['email'])
-    # st.write(st.session_state['email'])
-    if 'email' in st.session_state:
-        st.session_state['new_row'] = match_session_record(df, st.session_state['email'])
-    else: st.switch_page('views/introduction.py')
+    # # st.write(df['email'])
+    # # st.write(st.session_state['email'])
+    # if 'email' in st.session_state:
+    #     st.session_state['new_row'] = match_session_record(df, st.session_state['email'])
+    # else: st.switch_page('views/introduction.py')
 
     # Sidebar navigation
     st.session_state['pretask_start'] = True
@@ -172,6 +185,7 @@ def main():
                 st.session_state['ce_done'] = False
                 st.session_state['ce_submitted'] = False
                 st.switch_page('views/pretask_survey.py')
+
             else: 
                 with st.spinner("Saving your answers ... ", show_time=False):
                     st.session_state['ce_done'] = True
@@ -348,6 +362,10 @@ def main():
                 del st.session_state['ce_submitted']
                 del st.session_state['ae_submitted']
                 del st.session_state['ata_submitted']
+                
+                if 'mve_submitted' in st.session_state: del st.session_state['mve_submitted']
+                if 'mc_submitted' in st.session_state: del st.session_state['mc_submitted']
+                if 'mu_submitted' in st.session_state: del st.session_state['mu_submitted']
 
                 st.switch_page('views/task_specific_survey.py')
 
