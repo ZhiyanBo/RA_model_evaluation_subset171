@@ -426,7 +426,7 @@ def main():
     # </style>'''
 
 
-    st.write("The entire survey takes around **45 minutes** to finish. Once the survey is submitted, the data collected will be fully anonymised for research at the University of Oxford and potential publication in future. " \
+    st.write("The entire survey takes around **30 minutes** to finish. Once the survey is submitted, the data collected will be fully anonymised for research at the University of Oxford and potential publication in future. " \
     "If you are ready to start, please enter your preferred contact email address in the textbox below and click on the “Start Survey” button, " \
     "which will direct you to the first section of the survey.")
 
