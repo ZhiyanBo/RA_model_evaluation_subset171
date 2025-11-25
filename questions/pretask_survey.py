@@ -7,7 +7,8 @@ clinical_expertise_questions = [
     "question_number": 0, 
     "question": "Are you a rheumatologist or a radiologist?",
     "options": ["Rheumatologist", 
-                "Radiologist"],
+                "Radiologist",
+                "Researcher"],
     },
     {
     "question_number": 1, 
